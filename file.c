@@ -641,7 +641,11 @@ const struct file_operations wrapfs_main_fops = {
 const struct file_operations wrapfs_dir_fops = {
 	.llseek		= wrapfs_file_llseek,
 	.read		= generic_read_dir,
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(6, 5, 0)
+	.iterate_shared	= wrapfs_readdir,
+#else
 	.iterate	= wrapfs_readdir,
+#endif
 	.unlocked_ioctl	= wrapfs_unlocked_ioctl,
 #ifdef CONFIG_COMPAT
 	.compat_ioctl	= wrapfs_compat_ioctl,
